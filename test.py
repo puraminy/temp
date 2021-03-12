@@ -28,8 +28,8 @@ model_args.num_beams = 10
 
 #model = T5Model("mt5", "persiannlp/mt5-base-parsinlu-opus-translation_fa_en", args=model_args)
 model_name = "t5-small"
-result_name  = "xWant"
-model = T5Model("t5", model_name + "/best_model" , args=model_args)
+result_name = "xWant"
+model = T5Model("t5", model_name + "/best_model", args=model_args)
 
 eval_df = pd.read_csv("data/eval.tsv", sep="\t").astype(str)
 
@@ -37,18 +37,12 @@ truth_values = eval_df.loc[eval_df["prefix"] == "xWant"]["target_text"].tolist()
 input_values = eval_df.loc[eval_df["prefix"] == "xWant"]["input_text"].tolist()
 
 pred_values = model.predict(input_values)
-pred_values
-
-
-truth_values
-
-len(truth_values)
 
 # +
 bleu_score = sacrebleu.corpus_bleu(pred_values, truth_values)
 print(bleu_score.score)
 
-with open(model_name + "/results/" + result_name + '.txt', 'w') as f:
+with open(f'{model_name}/results/{result_name}.txt', 'w') as f:
         print("BLEU:" + bleu_score.score, file=f)
         for truth, pred in zip(truth_values, pred_values):
             print(truth,"--", pred)
@@ -61,6 +55,5 @@ print("BLEU: ", bleu_score.score)
 
 print("predicting")
 print(model.predict(["PersonX go to the bar","PersonX hunts"]))
-sys.exit()
 
 
