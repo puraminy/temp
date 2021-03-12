@@ -17,7 +17,7 @@ import logging
 import pandas as pd
 from simpletransformers.t5 import T5Model, T5Args
 #import wandb
-#wandb.init(wandb.Settings(start_method="fork"))
+#wandb.login()
 
 logging.basicConfig(level=logging.INFO)
 transformers_logger = logging.getLogger("transformers")
@@ -47,8 +47,12 @@ model_args.overwrite_output_dir = True
 model_args.preprocess_inputs = False
 model_args.num_return_sequences = 1
 
+model_name = "t5-small"
+model_args.output_dir = model_name
+#model_args.wandb_project = "mt5"
+
 #model = T5Model("mt5", "google/mt5-small", args=model_args)
-model = T5Model("t5", "t5-small", args=model_args)
+model = T5Model("t5", model_name, args=model_args)
 model.train_model(train_df, eval_data=eval_df)
 
 # results = model.eval_model(eval_df, verbose=True)
