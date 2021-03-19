@@ -1,23 +1,7 @@
-# ---
-# jupyter:
-#   jupytext:
-#     formats: ipynb,py:light
-#     text_representation:
-#       extension: .py
-#       format_name: light
-#       format_version: '1.5'
-#       jupytext_version: 1.5.0
-#   kernelspec:
-#     display_name: Python 3
-#     language: python
-#     name: python3
-# ---
 
 import logging
 import pandas as pd
 from simpletransformers.t5 import T5Model, T5Args
-#import wandb
-#wandb.login()
 
 logging.basicConfig(level=logging.INFO)
 transformers_logger = logging.getLogger("transformers")
@@ -25,10 +9,6 @@ transformers_logger.setLevel(logging.WARNING)
 
 train_df = pd.read_csv("data/train.tsv", sep="\t").astype(str)
 eval_df = pd.read_csv("data/eval.tsv", sep="\t").astype(str)
-
-#train_df = train_df.truncate(after=1000)
-#train_df["prefix"] = ""
-#eval_df["prefix"] = ""
 
 model_args = T5Args()
 model_args.max_seq_length = 59
@@ -50,11 +30,9 @@ model_args.do_sample = True
 model_args.num_beams = 5
 model_args.top_k = 5
 model_args.top_p = 0.3
-#model_args.wandb_project = "mt5"
 output_dir = "outputs_t5_small_full_2020" 
 model_args.output_dir = output_dir
 
-#model = T5Model("mt5", "google/mt5-small", args=model_args)
 model = T5Model("t5", "t5-small", args=model_args)
 model.train_model(train_df, eval_data=eval_df)
 
