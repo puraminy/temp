@@ -46,13 +46,16 @@ model_args.reprocess_input_data = True
 model_args.overwrite_output_dir = True
 model_args.preprocess_inputs = False
 model_args.num_return_sequences = 1
-
-model_name = "t5-small"
-model_args.output_dir = model_name
+model_args.do_sample = True
+model_args.num_beams = 5
+model_args.top_k = 5
+model_args.top_p = 0.3
 #model_args.wandb_project = "mt5"
+output_dir = "outputs_t5_small_full_2020" 
+model_args.output_dir = output_dir
 
 #model = T5Model("mt5", "google/mt5-small", args=model_args)
-model = T5Model("t5", model_name, args=model_args)
+model = T5Model("t5", "t5-small", args=model_args)
 model.train_model(train_df, eval_data=eval_df)
 
 # results = model.eval_model(eval_df, verbose=True)
